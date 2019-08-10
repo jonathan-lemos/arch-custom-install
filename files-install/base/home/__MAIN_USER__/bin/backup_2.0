@@ -1,0 +1,53 @@
+#!/bin/bash
+
+dest="/home/jonathan/backups"
+username="jonathanlemos@protonmail.com"
+
+day=$(date +%F-%H-%M)
+hostname=$(hostname -s)
+archive_file="$hostname-$day.tar.xz"
+crypt_file="$archive_file.gpg"
+
+on_ctrl_c() {
+	echo "Cleaning up the mess..."
+	rm -f $dest/$archive_file
+	rm -f $dest/$crypt_file
+	exit
+}
+
+trap "on_ctrl_c" INT
+
+if [[ -z $1 || -z $2 ]]; then
+	echo "Usage: $0 [include file] [exclude file]"
+	exit
+fi
+
+include_file=$1
+exclude_file=$2
+
+echo "Including:"
+cat $include_file
+echo ""
+echo "Excluding:"
+cat $exclude_file
+
+if ! XZ_OPT=-3 sudo -k tar -p --xattrs --exclude-from=$exclude_file --verbatim-files-from --files-from=$include_file -cvpJf $dest/$archive_file | tee back_list; then
+	echo "Tar returned non-zero"
+	on_ctrl_c
+	exit
+fi
+
+size=$(ls -lh $dest/$archive_file | awk '{print $5}')
+echo "Made archive of size $size"
+
+if ! gpg --symmetric --cipher-algo=AES256 --compress-algo none $dest/$archive_file; then
+	echo "gpg returned non-zero"
+	on_ctrl_c
+	exit
+fi
+
+rm -f $dest/$archive_file
+
+# gpg --output x.out --decrypt x.in
+
+megaput --username $username $dest/$crypt_file --password '%#PyXreiNZnB*7ZgzBZH9Ubc'

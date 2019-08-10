@@ -1,0 +1,34 @@
+#!/bin/sh
+
+colormain='E008AECC'
+colormainalt='660441CC'
+colorkeypress='0AAEE0CC'
+colorbackspace='E00A23CC'
+colorinside='33333333'
+colortext='666666BB'
+# text=""
+text=""
+
+TMPBG=/tmp/screen.png
+LOCK=$HOME/bin/lock.png
+RES=$(xrandr | head -1 | awk '{print $8}')x$(xrandr | head -1 | awk '{print $10}' | tr -d ,)
+
+ffmpeg -f x11grab -video_size $RES -y -i $DISPLAY -i $LOCK -filter_complex "gblur=8:1,overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2" -vframes 1 $TMPBG -loglevel quiet
+
+i3lock \
+--image $TMPBG \
+--ignore-empty-password \
+--indicator \
+--clock \
+--ringcolor=$colormain \
+--linecolor=$colormainalt \
+--keyhlcolor=$colorkeypress \
+--bshlcolor=$colorbackspace \
+--insidecolor=$colorinside \
+--separatorcolor=$colormainalt \
+--timestr=$text \
+--timesize=100 \
+--time-font="FontAwesome" \
+--datestr="" \
+--radius 185
+

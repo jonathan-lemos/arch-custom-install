@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ -z $1 ]]; then
+	echo "Usage: $0 (cpp|c)"
+	exit
+fi
+
+cd ~/.vim
+rm .ycm_extra_conf.py
+
+if [[ "$1" == "cpp" ]]; then
+	cp .ycm_extra_conf.py.cpp .ycm_extra_conf.py
+else
+	cp .ycm_extra_conf.py.c .ycm_extra_conf.py
+fi

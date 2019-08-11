@@ -52,6 +52,13 @@ if dialog --yesno "Would you like to set a root password?" $dialog_y $dialog_x; 
 	fi
 fi
 
+# link home files to root equivalents
+ln -s /home/$username/.vimrc /root/.vimrc
+ln -s /home/$username/.vim /root/.vim
+mkdir /root/.config
+ln -s /home/$username/.config/nvim /root/.config/nvim
+ln -s /home/$username/.zshrc /root/.zshrc
+
 # install bootloader
 if ! bootctl install; then
 	exit

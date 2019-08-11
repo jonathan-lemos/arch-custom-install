@@ -22,6 +22,8 @@ networknanager
 nm-connection-editor
 noto-fonts
 noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
 openssh
 pavucontrol
 powerline-fonts
@@ -32,6 +34,7 @@ ssh-agent
 ttf-dejavu
 ttf-font-awesome
 ttf-liberation
+ttf-roboto
 wireless_tools
 wpa_supplicant
 xorg

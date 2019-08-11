@@ -19,7 +19,7 @@ exec --no-startup-id $HOME/wallpaper.sh
 exec --no-startup-id redshift -l 29.9:-81.5 -t 6500:2400
 
 # Compton
-exec --no-startup-id /usr/bin/compton
+exec --no-startup-id /usr/bin/compton --backend glx --vsync opengl-swc --blur-method kawase --blur-background --blur-strength 5
 
 exec --no-startup-id ssh-agent
 
